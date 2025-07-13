@@ -37,4 +37,11 @@ npm run build
 #   base: "/MINGEN/", // use your repo name here
 # };
 
+#   "homepage": "https://beaintech.github.io/MINGEN/",
+  <!-- "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist"
+  }, -->
 ``
