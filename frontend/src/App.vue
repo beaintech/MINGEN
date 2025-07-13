@@ -17,14 +17,15 @@
 
     <div v-if="response">
       <h2>结果:</h2>
-      <pre>{{ response }}</pre>
+      <div v-html="renderedContent"></div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import axios from 'axios'
+import { marked } from 'marked'
 
 const formData = ref({
   name: '',
@@ -33,6 +34,14 @@ const formData = ref({
 })
 
 const response = ref(null)
+
+const rawResult = ref("") // GPT 返回的 result
+const renderedContent = computed(() => {
+  if (typeof response.value.result === 'string') {
+    return marked(response.value.result)
+  }
+  return '<p>暂无内容</p>'
+})
 
 const submitForm = async () => {
   try {
