@@ -27,3 +27,14 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### deploy
+# npm install --save-dev vite-plugin-gh-pages
+
+``
+# vite.config.js
+# export default {
+#   base: "/MINGEN/", // use your repo name here
+# };
+
+``
