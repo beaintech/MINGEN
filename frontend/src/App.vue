@@ -1,47 +1,74 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="container">
+    <h1>MINGEN - 命运生成器</h1>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <form @submit.prevent="submitForm">
+      <label for="name">姓名:</label>
+      <input type="text" id="name" v-model="formData.name" required />
+
+      <label for="birthday">出生日期和时间:</label>
+      <input type="datetime-local" id="birthday" v-model="formData.birthday" required />
+
+      <label for="birthplace">出生地:</label>
+      <input type="text" id="birthplace" v-model="formData.birthplace" required />
+
+      <button type="submit">提交</button>
+    </form>
+
+    <div v-if="response">
+      <h2>结果:</h2>
+      <pre>{{ response }}</pre>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
 </template>
 
+<script setup>
+import { ref } from 'vue'
+import axios from 'axios'
+
+const formData = ref({
+  name: '',
+  birthday: '',
+  birthplace: '',
+})
+
+const response = ref(null)
+
+const submitForm = async () => {
+  try {
+    const res = await axios.post('http://127.0.0.1:8000/submit', formData.value)
+    response.value = res.data
+  } catch (err) {
+    console.error('Error submitting:', err)
+    response.value = { error: '提交失败，请检查服务端是否运行' }
+  }
+}
+</script>
+
 <style scoped>
-header {
-  line-height: 1.5;
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-family: Arial, sans-serif;
 }
-
-.logo {
+input, button {
   display: block;
-  margin: 0 auto 2rem;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 8px;
+  font-size: 16px;
 }
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+button {
+  background-color: #409eff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #66b1ff;
 }
 </style>

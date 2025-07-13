@@ -28,20 +28,22 @@ npm run dev
 npm run build
 ```
 
-### deploy
+```sh
+npm run deploy
+```
+
+# deploy
 # npm install --save-dev vite-plugin-gh-pages
 
-``
 # vite.config.js
 # export default {
 #   base: "/MINGEN/", // use your repo name here
 # };
 
-#   "homepage": "https://beaintech.github.io/MINGEN/",
-  <!-- "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "deploy": "gh-pages -d dist"
-  }, -->
-``
+# "homepage": "https://beaintech.github.io/MINGEN/",
+# "scripts": {
+#  "dev": "vite",
+#  "build": "vite build",
+#  "preview": "vite preview",
+#  "deploy": "gh-pages -d dist"
+# },
