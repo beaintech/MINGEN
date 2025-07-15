@@ -43,7 +43,7 @@ const formData = ref({
 
 const response = ref(null)
 
-const rawResult = ref("") // GPT 返回的 result
+// GPT 返回的 result
 const renderedContent = computed(() => {
   if (typeof response.value.result === 'string') {
     return marked(response.value.result)
@@ -64,7 +64,7 @@ const submitForm = async () => {
 
 <style scoped>
 .container {
-  max-width: 500px;
+  max-width: 75%;
   margin: 40px auto;
   padding: 20px;
   border: 1px solid #ddd;
@@ -88,4 +88,15 @@ button {
 button:hover {
   background-color: #66b1ff;
 }
+
+.markdown-table table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.markdown-table td:first-child {
+  width: 25%;
+  font-weight: bold;
+}
+
 </style>
