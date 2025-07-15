@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>MINGEN - 命运生成器</h1>
+    <h1>MINGEN - StarSeed - 命运生成器</h1>
 
     <form @submit.prevent="submitForm">
       <label for="name">姓名:</label>
@@ -11,6 +11,13 @@
 
       <label for="birthplace">出生地:</label>
       <input type="text" id="birthplace" v-model="formData.birthplace" required />
+
+      <label for="gender">性别:</label>
+      <select id="gender" v-model="formData.gender">
+          <option value="男">男</option>
+          <option value="女">女</option>
+          <option value="未提供">未提供</option>
+      </select>
 
       <button type="submit">提交</button>
     </form>
@@ -31,6 +38,7 @@ const formData = ref({
   name: '',
   birthday: '',
   birthplace: '',
+  gender: ''
 })
 
 const response = ref(null)
