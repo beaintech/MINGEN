@@ -53,7 +53,8 @@ const renderedContent = computed(() => {
 
 const submitForm = async () => {
   try {
-    const res = await axios.post('http://127.0.0.1:8000/submit', formData.value)
+    // const res = await axios.post('http://127.0.0.1:8000/submit', formData.value)
+    const res = await axios.post('https://starseed-api.onrender.com/submit', formData.value)
     response.value = res.data
   } catch (err) {
     console.error('Error submitting:', err)
