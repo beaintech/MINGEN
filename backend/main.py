@@ -15,7 +15,8 @@ app = FastAPI()
 # 允许跨域请求（Vue 用在 localhost:5173 时必须要加）
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://beaintech.github.io"],  # 实际部署时改成前端的域名
+    # allow_origins=["*"],  # 实际部署时改成前端的域名
+    allow_origins=["https://beaintech.github.io"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
