@@ -50,10 +50,10 @@ const API_BASE = "https://starseed-api.onrender.com"
 
 const generateBasic = async () => {
   try {
-    const res = await axios.post('http://127.0.0.1:8000/generate-basic-report', formData.value)
-      // const res = await axios.post(`${API_BASE}/generate-basic-report`, formData.value)
-      console.log('后端返回的数据:', res.data.result) 
-      basicReport.value = cleanMarkdown(res.data.result)  // 处理返回的HTML
+    // const res = await axios.post('http://127.0.0.1:8000/generate-basic-report', formData.value)
+    const res = await axios.post(`${API_BASE}/generate-basic-report`, formData.value)
+    console.log('后端返回的数据:', res.data.result) 
+    basicReport.value = cleanMarkdown(res.data.result)  // 处理返回的HTML
     
   } catch (err) {
     console.error('Extra Report Error:', err)
@@ -63,8 +63,8 @@ const generateBasic = async () => {
 
 const generateExtra = async () => {
   try {
-    const res = await axios.post('http://127.0.0.1:8000/generate-extra-report', formData.value)
-      // const res = await axios.post(`${API_BASE}/generate-extra-report`, formData.value)
+      // const res = await axios.post('http://127.0.0.1:8000/generate-extra-report', formData.value)
+      const res = await axios.post(`${API_BASE}/generate-extra-report`, formData.value)
       console.log('后端返回的数据:', res.data.result) 
       extraReport.value = cleanMarkdown(res.data.result)
     } catch (err) {
