@@ -8,8 +8,8 @@ app = FastAPI()
 # CORS（Render 或本地前端访问时）
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=["*"],  # 部署时可以换成具体域名
-    allow_origins=["https://beaintech.github.io"], 
+    allow_origins=["*"],  # 部署时可以换成具体域名
+    # allow_origins=["https://beaintech.github.io"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
