@@ -47,3 +47,8 @@ npm run deploy
 #  "preview": "vite preview",
 #  "deploy": "gh-pages -d dist"
 # },
+
+# useful link
+# https://pypi.org/project/Faker/
+# locazition
+# https://www.destatis.de/DE/Home/_inhalt.html

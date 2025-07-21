@@ -1,29 +1,30 @@
 <template>
   <div class="app">
-    <h1>星命风水报告生成器</h1>
+    <h1>Astrology & Feng Shui Report Generator</h1>
     <form @submit.prevent="generateBasic">
-      <label>姓名: <input v-model="formData.name" /></label>
-      <label>生日: <input type="date" v-model="formData.birthday" /></label>
-      <label>出生时间: <input type="time" v-model="formData.time" /></label>
-      <label>出生地: <input v-model="formData.birthplace" /></label>
-      <label>性别: 
+      <label>Name: <input v-model="formData.name" /></label>
+      <label>Birthday: <input type="date" v-model="formData.birthday" /></label>
+      <label>Birth Time: <input type="time" v-model="formData.time" /></label>
+      <label>Birthplace: <input v-model="formData.birthplace" /></label>
+      <label>Gender: 
         <select v-model="formData.gender">
-          <option value="未提供" selected>未提供</option>
-          <option value="男">男</option>
-          <option value="女">女</option>
+          <option value="Not Provided" selected>Not Provided</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
         </select>
       </label>
       <br>
       <br>
-
     </form>
-    <button v-if="!basicReport" @click="generateBasic" type="submit">生成基础报告 (免费)</button>
+
+    <button v-if="!basicReport" @click="generateBasic" type="submit">Generate Basic Report (Free)</button>
     <div v-else v-html="basicReport" class="report"></div>
 
-    <button v-if="!extraReport" @click="generateExtra" type="submit">解锁情感与财富报告 (付费)</button>
+    <button v-if="!extraReport" @click="generateExtra" type="submit">Unlock Love & Wealth Report (Paid)</button>
     <div v-else v-html="extraReport" class="report"></div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, computed } from 'vue'
