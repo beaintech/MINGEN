@@ -27,6 +27,8 @@ async def generate_basic(data: dict):
             birthplace=data.get("birthplace"),
             gender=data.get("gender", "未提供")
         )
+# save submit data to SQLite and generate fortune report
+
         result = engine.analyze_basic()
         save_submission(data, result, report_type="basic")  # 确保保存数据
         return {"result": result}
@@ -135,5 +137,3 @@ async def root():
 #         return {"result": result}
 #     except Exception as e:
 #         return {"error": f"分析失败：{str(e)}"}
-
-# save submit data to SQLite and generate fortune report
