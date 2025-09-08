@@ -52,3 +52,6 @@ npm run deploy
 # https://pypi.org/project/Faker/
 # locazition
 # https://www.destatis.de/DE/Home/_inhalt.html
+
+# cd backend && uvicorn main:app --host 0.0.0.0 --port 10000
+# npm run dev

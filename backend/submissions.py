@@ -16,6 +16,9 @@ def init_db():
             birthday TEXT,
             time TEXT,
             birthplace TEXT,
+            second_birthday TEXT,     -- 新增
+            second_birthplace TEXT,   -- 新增
+            second_gender TEXT,       -- 新增
             report_type TEXT,          -- 新增字段，用于区分 basic / extra
             full_report TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <h1>Astrology & Feng Shui Report Generator</h1>
+    <h1>Astrology Report Generator</h1>
     <form @submit.prevent="generateBasic">
       <label>Name: <input v-model="formData.name" /></label>
       <label>Birthday: <input type="date" v-model="formData.birthday" /></label>
@@ -15,13 +15,39 @@
       </label>
       <br>
       <br>
-    </form>
 
+       <!-- Second person -->
+  <h3>Second Person</h3>
+    <label>Name: <input v-model="formData.second_name" /></label>
+    <label>Birthday: 
+      <input type="date" v-model="formData.second_birthday" />
+    </label>
+    <label>Birth Time: <input type="time" v-model="formData.second_time" /></label>
+    <label>Birthplace: 
+      <input v-model="formData.second_birthplace" />
+    </label>
+
+    <label>Gender: 
+      <select v-model="formData.second_gender">
+        <option value="Not Provided" selected>Not Provided</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </label>
+    <br>
+    <br>
+    </form>
+    <br>
+    <br>
     <button v-if="!basicReport" @click="generateBasic" type="submit">Generate Basic Report (Free)</button>
     <div v-else v-html="basicReport" class="report"></div>
 
     <button v-if="!extraReport" @click="generateExtra" type="submit">Unlock Love & Wealth Report (Paid)</button>
     <div v-else v-html="extraReport" class="report"></div>
+
+    <button v-if="!compatibilityReport" @click="generateCompatibility" type="button">Generate Compatibility Report</button>
+    <div v-else v-html="compatibilityReport" class="report"></div>
+
   </div>
 </template>
 
@@ -36,12 +62,18 @@ const formData = ref({
       gender: "未提供",
       birthday: "",
       time: "",
-      birthplace: ""
+      birthplace: "",
+
+      second_name: "",
+      second_birthday: "",
+      second_time: "",
+      second_birthplace: "",
+      second_gender: "Not Provided"
     })
 
 const basicReport = ref('')
 const extraReport = ref('')
-
+const compatibilityReport = ref(null); 
 // GPT 返回的 result
 // const cleanMarkdown = (text) => {
 //   return text.replace(/```markdown|```/g, '')
@@ -66,8 +98,8 @@ const API_BASE = "https://starseed-api.onrender.com"
 
 const generateBasic = async () => {
   try {
-    // const res = await axios.post('http://127.0.0.1:8000/generate-basic-report', formData.value)
-    const res = await axios.post(`${API_BASE}/generate-basic-report`, formData.value)
+    const res = await axios.post('http://127.0.0.1:10000/generate-basic-report', formData.value)
+    // const res = await axios.post(`${API_BASE}/generate-basic-report`, formData.value)
     console.log('后端返回的数据:', res.data.result) 
     basicReport.value = cleanMarkdown(res.data.result)  // 处理返回的HTML
     
@@ -79,8 +111,8 @@ const generateBasic = async () => {
 
 const generateExtra = async () => {
   try {
-      // const res = await axios.post('http://127.0.0.1:8000/generate-extra-report', formData.value)
-      const res = await axios.post(`${API_BASE}/generate-extra-report`, formData.value)
+      const res = await axios.post('http://127.0.0.1:10000/generate-extra-report', formData.value)
+      // const res = await axios.post(`${API_BASE}/generate-extra-report`, formData.value)
       console.log('后端返回的数据:', res.data.result) 
       extraReport.value = cleanMarkdown(res.data.result)
     } catch (err) {
@@ -88,7 +120,20 @@ const generateExtra = async () => {
      response.value = { error: '提交失败，请检查服务端是否运行' }
    }   
   }
-  
+
+  const generateCompatibility = async () => {
+  try {
+    const res = await axios.post('http://127.0.0.1:10000/generate-compatibility-report', formData.value)
+    // const res = await axios.post(`${API_BASE}/generate-compatibility-report`, formData.value);
+    console.log("Backend raw response:", res.data); 
+    console.log("Compatibility report:", res.data.result);
+    compatibilityReport.value = cleanMarkdown(res.data.result);
+  } catch (err) {
+    console.error("Compatibility Error:", err);
+    compatibilityReport.value = "<p>Compatibility report failed to load.</p>";
+  }
+};
+
 </script>
 
 <style scoped>

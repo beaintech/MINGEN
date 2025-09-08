@@ -8,8 +8,8 @@ app = FastAPI()
 # CORS（Render 或本地前端访问时）
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=["*"],  # 部署时可以换成具体域名
-    allow_origins=["https://beaintech.github.io"], 
+    allow_origins=["*"],  # 部署时可以换成具体域名
+    # allow_origins=["https://beaintech.github.io"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,7 +35,6 @@ async def generate_basic(data: dict):
     except Exception as e:
         return {"error": f"生成报告失败：{str(e)}"}
 
-
 # 高级报告接口（付费）
 
 @app.post("/generate-extra-report")
@@ -58,6 +57,37 @@ async def generate_extra(data: dict):
 async def root():
     return {"message": "MINGEN backend is running"}
 
+# 兼容性报告接口
+@app.post("/generate-compatibility-report")
+async def generate_compatibility(data: dict):
+    try:
+        # 第一个人
+        person1 = FortuneEngine(
+            name=data.get("name"),
+            birthday=data.get("birthday"),
+            time=data.get("time"),
+            birthplace=data.get("birthplace"),
+            gender=data.get("gender", "Not Provided")
+        )
+
+        # 第二个人
+        person2 = FortuneEngine(
+            name=data.get("second_name"),
+            birthday=data.get("second_birthday"),
+            birthplace=data.get("second_birthplace"),
+            time=data.get("second_time"),
+            gender=data.get("second_gender", "Not Provided")
+        )
+
+        # 调用你的兼容性分析方法（需要你在 FortuneEngine 里实现，比如 compare_with 或 analyze_compatibility）
+        result = person1.analyze_compatibility(person2)
+
+        # 保存数据到数据库（可选）
+        save_submission(data, result, report_type="compatibility")
+
+        return {"result": result}
+    except Exception as e:
+        return {"error": f"生成兼容性报告失败：{str(e)}"}
 
 # @app.post("/submit")
 # async def submit(data: dict):
