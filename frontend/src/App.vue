@@ -434,11 +434,11 @@ html, body { font-family: var(--font-body); }
 /* make the float path a bit larger so motion reads better */
 @keyframes float {
   0%, 100% { transform: translateY(0) translateX(0) }
-  50%      { transform: translateY(-26px) translateX(10px) } /* slightly bigger arc */
+  50%      { transform: translateY(-96px) translateX(10px) } /* slightly bigger arc */
 }
 @keyframes float-fast {
   0%, 100% { transform: translateY(0) translateX(0) }
-  50%      { transform: translateY(-36px) translateX(16px) } /* faster feel with larger swing */
+  50%      { transform: translateY(-86px) translateX(16px) } /* faster feel with larger swing */
 }
 
 /* keep background layers behind content */
