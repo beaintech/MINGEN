@@ -32,12 +32,44 @@ class FortuneEngine:
         return f"""
         You are a gentle and professional destiny & astrology advisor.
 
-        Person A:
-        - Name: {self.name}
+        {self.name}:
         - Gender: {self.gender}
         - Birthday: {self.birthday}
         - Time: {self.time}
         - Birthplace: {self.birthplace}
+
+        IMPORTANT RULES (must follow exactly):
+        1. - You MUST use this exact score.
+        - Do NOT invent or change the percentage.
+        2. Output format must be HTML only. 
+        - Use <h3> for section headings.
+        - Use <p> for normal text.
+        - Use <table>, <tr>, <th>, <td> for structured data.
+        - Each <tr> must be on a new line.
+        3. Do NOT use Markdown tables (|---|). 
+        4. Do NOT wrap the result in ``` or backticks.
+        5. Do NOT bold numbers with ** or __.
+        6. Each point must be one line (enforced by using one <p> per point).
+
+        RESPONSE TEMPLATE (copy and fill exactly):
+        <h3>Overview</h3>
+
+        <h3>{self.name}</h3>
+        
+        <h3>Key Strengths</h3>
+        <p>[One line strength]</p>
+        <p>[One line strength]</p>
+        <p>[One line strength]</p>
+
+        <h3>Growth Opportunities</h3>
+        <p>[One line opportunity]</p>
+        <p>[One line opportunity]</p>
+        <p>[One line opportunity]</p>
+
+        <h3>Guidance</h3>
+        <p>[One line guidance]</p>
+        <p>[One line guidance]</p>
+        <p>[One line guidance]</p>
         """
 
     def generate_extra_prompt(self):
@@ -220,37 +252,6 @@ class FortuneEngine:
 # # 请严格按照中国传统命理规则（农历 + 天干地支）推算结果, 英语输出。
 
 # # """
-
-#     def generate_basic_prompt(self):
-#         base_prompt = f"""
-#         You are a gentle and professional destiny & astrology advisor...
-#         [your existing instructions here]
-        
-#         Person A:
-#         - Name: {self.name}
-#         - Gender: {self.gender}
-#         - Birthday: {self.birthday}
-#         - Time: {self.time}
-#         - Birthplace: {self.birthplace}
-#         """
-
-#         if self.second_birthday and self.second_birthplace:
-#             base_prompt += f"""
-#         Person B:
-#         - Name: {self.second_name}
-#         - Birthday: {self.second_birthday}
-#         - Gender: {self.second_gender}
-#         - Birthplace: {self.second_birthplace}
-#         - Time: {self.second_time}
-#         """
-
-#             base_prompt += """
-#         Please generate not only the personal fortune for Person A, but also a **compatibility analysis**
-#         between Person A and Person B, covering:
-#         - Overall compatibility score (percentage)
-#         - Stability / Career / Security / Functionality / Romance (0–100 each, with explanation)
-#         - 5-sentence summary
-#         """
 
 #         return base_prompt
 
