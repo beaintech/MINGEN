@@ -1,16 +1,22 @@
 <template>
   <div class="space-bg">
-    <!-- decorative layers -->
     <div class="stars layer-1"></div>
     <div class="stars layer-2"></div>
     <div class="stars layer-3"></div>
-    <div class="planet planet-1"></div>
+    <!-- <div class="planet planet-1"></div>
     <div class="planet planet-2"></div>
     <div class="planet planet-3 ringed"></div>
     <div class="planet planet-4 ringed"></div>
     <div class="planet planet-5 ringed"></div>
-    <div class="planet planet-6"></div>
+    <div class="planet planet-6"></div> -->
 
+    <!-- Real planets -->
+    <div class="planet-img sun"></div>
+    <div class="planet-img jupiter"></div>
+    <div class="planet-img earth"></div>
+    <div class="planet-img moon"></div>
+    <div class="planet-img saturn"></div>
+    <div class="planet-img mars"></div>
 
     <div class="app">
       <header class="hero">
@@ -191,10 +197,6 @@ const generateCompatibility = async () => {
 </script>
 
 <style scoped>
-space-/* ---- GLOBAL, not scoped ---- */
-html, body, #app { height: 100%; margin: 0; background: #060b1a; }
-* { box-sizing: border-box; }
-
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:wght@400;500;600&display=swap');
 
 :root{
@@ -690,4 +692,135 @@ input:focus, select:focus {
   .form-grid { grid-template-columns: 1fr; }
   .actions { flex-direction: column; }
 }
+
+/* ==== Real planet images (base) ==== */
+.planet-img {
+  position: fixed;
+  pointer-events: none;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  filter: drop-shadow(0 0 18px rgba(140,170,255,.22));
+  will-change: transform;
+  z-index: 0; /* behind .app content */
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50%      { transform: translateY(-26px) translateX(10px); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.planet-img.sun {
+  width: 260px; height: 260px;
+  right: 9%; top: 100px;
+  background: none;                  /* image moves to ::before */
+  animation: float 7.5s ease-in-out infinite;  /* no spin here */
+  box-shadow: 0 0 16px rgba(255,190,110,.24), 0 0 34px rgba(255,150,60,.16);
+  position: fixed; pointer-events: none; border-radius: 50%;
+}
+
+/* SPIN the disc */
+.planet-img.sun::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background-image: url("/planets/sun.png");
+  background-size: cover; background-position: center;
+  animation: spin 60s linear infinite;
+}
+
+/* (optional) corona/halo */
+.planet-img.sun::after {
+  content: "";
+  position: absolute; inset: -6%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,185,90,.24), rgba(255,160,60,0) 70%);
+  -webkit-mask: radial-gradient(circle, transparent 84%, #000 65%);
+          mask: radial-gradient(circle, transparent 84%, #000 65%);
+  filter: blur(4px);
+  animation: float 7.5s ease-in-out infinite;
+}
+
+.planet-img.jupiter {
+  width: 200px; height: 200px;
+  right: 18%; top: 42%;
+  background-image: url("/planets/jupiter.png");
+  animation: spin 7.5s ease-in-out infinite, spin 60s linear infinite;
+  filter: drop-shadow(0 0 24px rgba(255,210,170,.18));
+}
+
+.planet-img.jupiter::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image:url("/planets/jupiter.webp");
+  background-size:cover; background-position:center; background-repeat:no-repeat;
+  border-radius:50%;
+  animation: spin 180s linear infinite; /* slow spin */
+  filter: drop-shadow(0 0 24px rgba(255,210,170,.18));
+}
+
+.planet-img.earth {
+  width: 300px; height: 300px;
+  left: 15%; top: 55%;
+  background-image: url("/planets/earth.png");
+  animation: float 7.5s ease-in-out infinite, spin 60s linear infinite;
+  filter: drop-shadow(0 0 20px rgba(120,190,255,.28));
+}
+
+.planet-img.moon {
+  width: 158px; height: 158px;
+  left: calc(8% + 10px);
+  top: calc(50% + -80px);
+  background-image: url("/planets/moon.png");
+  animation: float 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(220,220,255,.22));
+}
+
+.planet-img.saturn {
+  width: 200px; height: 200px;
+  right: 10%; top: 68%;
+  background-image: url("/planets/saturn.png"); 
+  animation: float 8.5s ease-in-out infinite, spin 140s linear infinite;
+  filter: drop-shadow(0 0 22px rgba(210,190,255,.24));
+}
+
+.planet-img.saturn.ringed::before {
+  content: "";
+  position: absolute;
+  left: -45%; top: 48%;
+  width: 190%; height: 56%;
+  border: 2px solid rgba(230,220,255,.22);
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-radius: 50%;
+  transform: rotate(14deg);
+  filter: blur(.25px);
+  pointer-events: none;
+}
+
+.planet-img.mars {
+  width: 150px; height: 150px;
+  left: calc(20% - 50px); 
+  top: 160px;
+  background-image: url("/planets/mars.png");
+  animation: float 7s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(255,140,120,.22));
+}
+
+/* If you prefer Mercury/Venus instead of Mars/Jupiter, you can reuse these slots:
+.planet-img.mercury { background-image: url("/planets/mercury.webp"); }
+.planet-img.venus   { background-image: url("/planets/venus.webp"); }
+*/
+
+.app { position: relative; z-index: 1; }
+
+@media (max-width: 900px) {
+  .planet-img.mars { left: -24px; top: 220px; }
+}
+
 </style>
