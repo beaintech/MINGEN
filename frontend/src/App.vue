@@ -164,7 +164,8 @@ const cleanMarkdown = (rawText) => {
 
 const generateBasic = async () => {
   try {
-    const res = await axios.post('http://127.0.0.1:10000/generate-basic-report', formData.value)
+    // const res = await axios.post('http://127.0.0.1:10000/generate-basic-report', formData.value)
+    const res = await axios.post(`${API_BASE}/generate-basic-report`, formData.value)
     basicReport.value = cleanMarkdown(res.data.result)
   } catch (err) {
     console.error('Basic Report Error:', err)
@@ -174,7 +175,8 @@ const generateBasic = async () => {
 
 const generateExtra = async () => {
   try {
-    const res = await axios.post('http://127.0.0.1:10000/generate-extra-report', formData.value)
+    // const res = await axios.post('http://127.0.0.1:10000/generate-extra-report', formData.value)
+    const res = await axios.post(`${API_BASE}/generate-extra-report`, formData.value)
     extraReport.value = cleanMarkdown(res.data.result)
   } catch (err) {
     console.error('Extra Report Error:', err)
@@ -184,7 +186,8 @@ const generateExtra = async () => {
 
 const generateCompatibility = async () => {
   try {
-    const res = await axios.post('http://127.0.0.1:10000/generate-compatibility-report', formData.value)
+    // const res = await axios.post('http://127.0.0.1:10000/generate-compatibility-report', formData.value)
+    const res = await axios.post(`${API_BASE}/generate-compatibility-report`, formData.value)
     compatibilityReport.value = cleanMarkdown(res.data.result)
   } catch (err) {
     console.error('Compatibility Error:', err)
@@ -199,9 +202,10 @@ const generateCompatibility = async () => {
 :root{
   --font-display: "Cinzel", ui-serif, Georgia, serif;
   --font-body: "EB Garamond", ui-serif, Georgia, serif;
+  --group-shift: 2.5vw;   
+  --group-time: 18s; 
 }
 
-/* apply body font globally */
 html, body { font-family: var(--font-body); }
 
 .space-bg {
@@ -346,7 +350,6 @@ html, body { font-family: var(--font-body); }
   position: relative; z-index: 1;
 }
 
-/* Headings */
 .hero {
   text-align: center;
   margin-bottom: 24px;
@@ -389,8 +392,6 @@ html, body { font-family: var(--font-body); }
   padding: 20px
 }
 
-
-/* ====== Fixed-Width Form Card ====== */
 .form-card h2,
 .form-card h3 {
   font-family: var(--font-display, "Cinzel", ui-serif, Georgia, serif);
@@ -478,7 +479,7 @@ input:focus, select:focus {
 /* Divider */
 .divider {
   position: relative;
-  margin: 14px 0 8px;
+  margin: 34px 0 20px;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(138,182,255,.4), transparent);
 }
@@ -578,7 +579,6 @@ input:focus, select:focus {
   font-size: 12px;
 }
 
-/* ====== Responsive tweaks ====== */
 @media (max-width: 760px) {
   .form-grid { grid-template-columns: 1fr; }
   .actions { flex-direction: column; }
@@ -594,11 +594,6 @@ input:focus, select:focus {
   filter: drop-shadow(0 0 18px rgba(140,170,255,.22));
   will-change: transform;
   z-index: 0;
-}
-
-:root{
-  --group-shift: 2.5vw;   
-  --group-time: 18s; 
 }
 
 @keyframes group-sweep {
@@ -630,7 +625,7 @@ input:focus, select:focus {
 
 .planet-img.sun {
   width: 300px; height: 300px;
-  right: 5%; top: 12%;
+  right: 20%; top: 12%;
   background-image: url("/planets/sun.png");
   animation: spin 7.5s ease-in-out infinite, spin 60s linear infinite;
   filter: drop-shadow(0 0 24px rgba(255,210,170,.18));
@@ -649,8 +644,8 @@ input:focus, select:focus {
 .planet-img.jupiter {
   width: 200px;
   height: 200px;
-  right: 18%;
-  top: 42%;
+  right: 8%;
+  top: 45%;
   background-image: url("/planets/jupiter.png");
   animation: spin 7.5s ease-in-out infinite, spin 60s linear infinite;
   filter: drop-shadow(0 0 24px rgba(255, 210, 170, 0.18));
@@ -673,7 +668,7 @@ input:focus, select:focus {
   width: 300px;
   height: 300px;
   left: 15%;
-  top: 55%;
+  top: 58%;
   background-image: url("/planets/earth.png");
   animation: float 7.5s ease-in-out infinite, spin 60s linear infinite;
   filter: drop-shadow(0 0 20px rgba(120, 190, 255, 0.28));
@@ -683,15 +678,15 @@ input:focus, select:focus {
   width: 158px;
   height: 158px;
   left: calc(8% + 10px);
-  top: calc(50% + -80px);
+  top: calc(58% + -80px);
   background-image: url("/planets/moon.png");
   animation: float 6s ease-in-out infinite;
   filter: drop-shadow(0 0 10px rgba(220, 220, 255, 0.22));
 }
 
 .planet-img.saturn{
-  position: fixed; right: 5%; top: 68%;
-  width: 220px; height: 220px; background: none; pointer-events: none; z-index: 0;
+  position: fixed; right: 20%; top: 65%;
+  width: 250px; height: 250px; background: none; pointer-events: none; z-index: 0;
   animation: sweep-340 22s linear infinite alternate;
 }
 .planet-img.saturn::before{
@@ -701,10 +696,10 @@ input:focus, select:focus {
 }
 
 .planet-img.mars {
-  width: 150px;
-  height: 150px;
-  left: calc(20% - 50px);
-  top: 160px;
+  width: 180px;
+  height: 180px;
+  left: calc(23% - 10px);
+  top: 220px;
   background-image: url("/planets/mars.png");
   animation: float 7s ease-in-out infinite;
   filter: drop-shadow(0 0 20px rgba(255, 140, 120, 0.22));
@@ -713,7 +708,7 @@ input:focus, select:focus {
 .planet-img.mercury{
   position: absolute; 
   width: 120px; height: 120px;
-  right: 22%; top: 4%;
+  right: 2%; top: 24%;
   background-image: url("/planets/mercury.png");
   background-size: cover; background-position: center; background-repeat: no-repeat;
   animation: sweep-20 16s linear infinite alternate; /* or your float/orbit */
@@ -727,8 +722,8 @@ input:focus, select:focus {
 
 .planet-img.venus{
   position: absolute; 
-  width: 100px; height: 100px;
-  left: 6%; top: 10%;
+  width: 120px; height: 120px;
+  left: -1%; top: 15%;
   background-image: url("/planets/venus.png");
   background-size: cover; background-position: center; background-repeat: no-repeat;
   animation: sweep-340 18s linear infinite alternate;
