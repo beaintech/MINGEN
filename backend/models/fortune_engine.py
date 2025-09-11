@@ -84,8 +84,6 @@ class FortuneEngine:
         - Birthplace: {self.birthplace}
 
         IMPORTANT RULES (must follow exactly):
-        1. - You MUST use this exact score.
-        - Do NOT invent or change the percentage.
         2. Output format must be HTML only. 
         - Use <h3> for section headings.
         - Use <p> for normal text.
