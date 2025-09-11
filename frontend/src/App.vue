@@ -13,6 +13,8 @@
       <div class="planet-img mars"></div>
       <div class="planet-img mercury"></div>
       <div class="planet-img venus"></div>
+      <div class="planet-img uranus"></div>
+      <div class="planet-img neptune"></div>
     </div>
 
     <div class="app">
@@ -668,17 +670,17 @@ input:focus, select:focus {
   width: 300px;
   height: 300px;
   left: 15%;
-  top: 58%;
+  top: 65%;
   background-image: url("/planets/earth.png");
   animation: float 7.5s ease-in-out infinite, spin 60s linear infinite;
   filter: drop-shadow(0 0 20px rgba(120, 190, 255, 0.28));
 }
 
 .planet-img.moon {
-  width: 158px;
-  height: 158px;
+  width: 128px;
+  height: 128px;
   left: calc(8% + 10px);
-  top: calc(58% + -80px);
+  top: calc(58% + 70px);
   background-image: url("/planets/moon.png");
   animation: float 6s ease-in-out infinite;
   filter: drop-shadow(0 0 10px rgba(220, 220, 255, 0.22));
@@ -698,7 +700,7 @@ input:focus, select:focus {
 .planet-img.mars {
   width: 180px;
   height: 180px;
-  left: calc(23% - 10px);
+  left: calc(13% - 10px);
   top: 220px;
   background-image: url("/planets/mars.png");
   animation: float 7s ease-in-out infinite;
@@ -733,6 +735,38 @@ input:focus, select:focus {
   content:""; position:absolute; inset:0; border-radius:50%;
   background: inherit; background-size: inherit; background-position: inherit; background-repeat: inherit;
   animation: spin 120s linear infinite;
+}
+
+/* Uranus */
+.planet-img.uranus{
+  position: absolute;
+  width: 100px; height: 100px;
+  left: 68%; top: 52%;
+  background-image: url("/planets/uranus.png");
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  animation: float 9s ease-in-out infinite;           /* keep subtle bob */
+  filter: drop-shadow(0 0 18px rgba(150, 230, 255, .22));
+}
+.planet-img.uranus::before{
+  content:""; position:absolute; inset:0; border-radius:50%;
+  background: inherit; background-size: inherit; background-position: inherit; background-repeat: inherit;
+  animation: spin 140s linear infinite;               /* self-spin only */
+}
+
+/* Neptune */
+.planet-img.neptune{
+  position: absolute;
+  width: 180px; height: 180px;
+  left: 25%; top: 40%;
+  background-image: url("/planets/neptune.png");
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  animation: float 10s ease-in-out infinite reverse;
+  filter: drop-shadow(0 0 18px rgba(110, 180, 255, .24));
+}
+.planet-group .planet-img.neptune::before{
+  content:""; position:absolute; inset:0; border-radius:50%;
+  background: inherit; background-size: inherit; background-position: inherit; background-repeat: inherit;
+  animation: spin 160s linear infinite;
 }
 
 @media (max-width: 900px) {
