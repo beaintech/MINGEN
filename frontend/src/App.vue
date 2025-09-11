@@ -137,6 +137,8 @@
 import { ref } from 'vue'
 import axios from 'axios'
 
+const API_BASE = "https://starseed-api.onrender.com"
+
 const formData = ref({
   name: "",
   gender: "Not Provided",
@@ -223,8 +225,6 @@ html, body { font-family: var(--font-body); }
   color: var(--ink, #e6ecff);
   z-index: 0;          
 }
-
-.app{ position: relative; z-index: 1; } /* content above bg */
 
 .hero h1 {
   font-family: var(--font-display);
@@ -636,7 +636,7 @@ input:focus, select:focus {
 .planet-img.sun::before{
   content:"";
   position:absolute; inset:0;
-  background-image:url("/planets/sun.webp");
+  background-image:url("/planets/sun.png");
   background-size:cover; background-position:center; background-repeat:no-repeat;
   border-radius:50%;
   animation: spin 180s linear infinite; /* slow spin */
@@ -657,7 +657,7 @@ input:focus, select:focus {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("/planets/jupiter.webp");
+  background-image: url("/planets/jupiter.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
