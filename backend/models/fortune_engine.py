@@ -76,12 +76,29 @@ class FortuneEngine:
         return f"""
         You are an astrology advisor focusing on love & wealth.
 
-        Person A:
+        Dear {self.name}:
         - Name: {self.name}
         - Gender: {self.gender}
         - Birthday: {self.birthday}
         - Time: {self.time}
         - Birthplace: {self.birthplace}
+
+        IMPORTANT RULES (must follow exactly):
+        1. - You MUST use this exact score.
+        - Do NOT invent or change the percentage.
+        2. Output format must be HTML only. 
+        - Use <h3> for section headings.
+        - Use <p> for normal text.
+        - Use <table>, <tr>, <th>, <td> for structured data.
+        - Each <tr> must be on a new line.
+        3. Do NOT use Markdown tables (|---|). 
+        4. Do NOT wrap the result in ``` or backticks.
+        5. Do NOT bold numbers with ** or __.
+        6. Each point must be one line (enforced by using one <p> per point).
+
+        RESPONSE TEMPLATE (copy and fill exactly):
+        <h3>Overview</h3>
+
         """
 
     def analyze_basic(self):
