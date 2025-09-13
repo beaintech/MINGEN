@@ -108,6 +108,11 @@
               💞 Compatibility Report
             </button>
           </div>
+          <div class="actions">
+            <button class="btn fullwidth" type="button" @click="generateBirthChart">
+              🗺️ Generate Birth Chart
+            </button>
+          </div>
         </form>
       </section>
 
@@ -156,6 +161,8 @@ const formData = ref({
 const basicReport = ref('')
 const extraReport = ref('')
 const compatibilityReport = ref(null)
+const birthChartUrl = ref('')
+let birthChartObjectUrl = ''
 
 const cleanMarkdown = (rawText) => {
   if (!rawText) return ''
@@ -166,10 +173,18 @@ const cleanMarkdown = (rawText) => {
     .trim()
 }
 
+const clearBirthChart = () => {
+  if (birthChartObjectUrl) {
+    URL.revokeObjectURL(birthChartObjectUrl)
+    birthChartObjectUrl = ''
+  }
+  birthChartUrl.value = ''
+}
+
 const generateBasic = async () => {
   try {
-    // const res = await axios.post('http://127.0.0.1:10000/generate-basic-report', formData.value)
-    const res = await axios.post(`${API_BASE}/generate-basic-report`, formData.value)
+    const res = await axios.post('http://127.0.0.1:10000/generate-basic-report', formData.value)
+    // const res = await axios.post(`${API_BASE}/generate-basic-report`, formData.value)
     basicReport.value = cleanMarkdown(res.data.result)
   } catch (err) {
     console.error('Basic Report Error:', err)
@@ -179,8 +194,8 @@ const generateBasic = async () => {
 
 const generateExtra = async () => {
   try {
-    // const res = await axios.post('http://127.0.0.1:10000/generate-extra-report', formData.value)
-    const res = await axios.post(`${API_BASE}/generate-extra-report`, formData.value)
+    const res = await axios.post('http://127.0.0.1:10000/generate-extra-report', formData.value)
+    // const res = await axios.post(`${API_BASE}/generate-extra-report`, formData.value)
     extraReport.value = cleanMarkdown(res.data.result)
   } catch (err) {
     console.error('Extra Report Error:', err)
@@ -190,14 +205,33 @@ const generateExtra = async () => {
 
 const generateCompatibility = async () => {
   try {
-    // const res = await axios.post('http://127.0.0.1:10000/generate-compatibility-report', formData.value)
-    const res = await axios.post(`${API_BASE}/generate-compatibility-report`, formData.value)
+    const res = await axios.post('http://127.0.0.1:10000/generate-compatibility-report', formData.value)
+    // const res = await axios.post(`${API_BASE}/generate-compatibility-report`, formData.value)
     compatibilityReport.value = cleanMarkdown(res.data.result)
   } catch (err) {
     console.error('Compatibility Error:', err)
     compatibilityReport.value = '<p>Compatibility report failed to load.</p>'
   }
 }
+
+const generateBirthChart = async () => {
+  try {
+    clearBirthChart()
+
+    const res = await axios.post('http://127.0.0.1:10000/generate-birth-chart', formData.value)
+    // const res = await axios.post(`${API_BASE}/generate-birth-chart`, formData.value)
+    const svg = res.data?.chart_svg
+    if (!svg) throw new Error('No chart_svg in response')
+
+    const blob = new Blob([svg], { type: 'image/svg+xml' })
+    birthChartObjectUrl = URL.createObjectURL(blob)
+    birthChartUrl.value = birthChartObjectUrl
+  } catch (err) {
+    console.error('Birth Chart Error:', err)
+    alert('Birth chart failed to load.')
+  }
+}
+
 </script>
 
 <style scoped>
@@ -536,6 +570,13 @@ input:focus, select:focus {
   box-shadow: 0 10px 24px rgba(202,169,255,.25), inset 0 0 24px rgba(202,169,255,.12);
 }
 
+.btn.fullwidth {
+  flex: 1 1 100%;
+  background: radial-gradient(120% 120% at 50% 0%, rgba(255, 215, 130, 0.35), rgba(255, 215, 130, 0.08));
+  border-color: rgba(255, 215, 130, 0.5);
+  box-shadow: 0 10px 24px rgba(255, 215, 130, 0.25), inset 0 0 24px rgba(255, 215, 130, 0.12);
+}
+
 /* ====== Reports ====== */
 .report-card {
   width: 720px;
@@ -682,7 +723,7 @@ input:focus, select:focus {
   left: calc(8% + 10px);
   top: calc(58% + 70px);
   background-image: url("/planets/moon.png");
-  animation: float 6s ease-in-out infinite;
+  animation: float 6s ease-in-out infinite, spin 60s linear infinite;
   filter: drop-shadow(0 0 10px rgba(220, 220, 255, 0.22));
 }
 
@@ -703,7 +744,7 @@ input:focus, select:focus {
   left: calc(13% - 10px);
   top: 220px;
   background-image: url("/planets/mars.png");
-  animation: float 7s ease-in-out infinite;
+  animation: float 7s ease-in-out infinite, spin 60s linear infinite;
   filter: drop-shadow(0 0 20px rgba(255, 140, 120, 0.22));
 }
 
@@ -713,7 +754,7 @@ input:focus, select:focus {
   right: 2%; top: 24%;
   background-image: url("/planets/mercury.png");
   background-size: cover; background-position: center; background-repeat: no-repeat;
-  animation: sweep-20 16s linear infinite alternate; /* or your float/orbit */
+  animation:  float 7s ease-in-out infinite, spin 60s linear infinite;
   filter: drop-shadow(0 0 14px rgba(180,180,180,.22));
 }
 .planet-img.mercury::before{
@@ -728,7 +769,7 @@ input:focus, select:focus {
   left: -1%; top: 15%;
   background-image: url("/planets/venus.png");
   background-size: cover; background-position: center; background-repeat: no-repeat;
-  animation: sweep-340 18s linear infinite alternate;
+  animation: float 7s ease-in-out infinite, spin 45s linear infinite;
   filter: drop-shadow(0 0 18px rgba(240,200,120,.22));
 }
 .planet-img.venus::before{
@@ -737,14 +778,13 @@ input:focus, select:focus {
   animation: spin 120s linear infinite;
 }
 
-/* Uranus */
 .planet-img.uranus{
   position: absolute;
   width: 100px; height: 100px;
   left: 68%; top: 52%;
   background-image: url("/planets/uranus.png");
   background-size: cover; background-position: center; background-repeat: no-repeat;
-  animation: float 9s ease-in-out infinite;           /* keep subtle bob */
+  animation: float 7s ease-in-out infinite, spin 45s linear infinite;
   filter: drop-shadow(0 0 18px rgba(150, 230, 255, .22));
 }
 .planet-img.uranus::before{
@@ -753,14 +793,13 @@ input:focus, select:focus {
   animation: spin 140s linear infinite;               /* self-spin only */
 }
 
-/* Neptune */
 .planet-img.neptune{
   position: absolute;
   width: 180px; height: 180px;
   left: 25%; top: 40%;
   background-image: url("/planets/neptune.png");
   background-size: cover; background-position: center; background-repeat: no-repeat;
-  animation: float 10s ease-in-out infinite reverse;
+  animation: float 7s ease-in-out infinite, spin 60s linear infinite;
   filter: drop-shadow(0 0 18px rgba(110, 180, 255, .24));
 }
 .planet-group .planet-img.neptune::before{
