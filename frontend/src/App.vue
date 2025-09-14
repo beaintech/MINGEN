@@ -130,6 +130,20 @@
         <h2>Compatibility Report</h2>
         <div v-html="compatibilityReport" class="report markdown-table"></div>
       </section>
+      <section v-if="birthChartUrl" class="report-card">
+      
+      <section v-if="birthChartUrl" class="report-card"></section>
+      <h2>Birth Chart</h2>
+
+      <div class="chart-wrap">
+        <img :src="birthChartUrl" alt="Birth chart" />
+        <div class="chart-actions">
+          <a :href="birthChartUrl" download="birth-chart.svg">Download</a>
+          <button type="button" @click="clearBirthChart">Clear</button>
+        </div>
+      </div>
+    </section>
+
 
       <footer class="footer">
         <span>© {{ new Date().getFullYear() }} MINGEEN</span>
@@ -139,8 +153,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import axios from 'axios'
+import { ref, onBeforeUnmount } from 'vue'
+
+onBeforeUnmount(() => {
+  if (birthChartObjectUrl) {
+    URL.revokeObjectURL(birthChartObjectUrl)
+    birthChartObjectUrl = ''
+  }
+})
 
 const API_BASE = "https://starseed-api.onrender.com"
 
@@ -245,6 +266,8 @@ const generateBirthChart = async () => {
 }
 
 html, body { font-family: var(--font-body); }
+
+.app{ color: var(--ink); font-family: var(--font-body); }
 
 .space-bg {
   position: fixed; 
@@ -430,7 +453,6 @@ html, body { font-family: var(--font-body); }
 
 .form-card h2,
 .form-card h3 {
-  font-family: var(--font-display, "Cinzel", ui-serif, Georgia, serif);
   text-transform: uppercase;
   letter-spacing: .10em;
   font-weight: 800;
@@ -447,7 +469,6 @@ html, body { font-family: var(--font-body); }
 
 /* Label captions above fields */
 .form-card label span {
-  font-family: var(--font-display, "Cinzel", ui-serif, Georgia, serif);
   font-variant-caps: all-small-caps;
   letter-spacing: .20em;
   font-size: 12.5px;
@@ -459,20 +480,17 @@ html, body { font-family: var(--font-body); }
 .form-card input,
 .form-card select,
 .form-card textarea {
-  font-family: var(--font-body, "EB Garamond", ui-serif, Georgia, serif);
   font-size: 16px;
   letter-spacing: .02em;
-  color: #f1f4ff;                 /* readable on dark bg */
+  color: #f1f4ff;                
   background: rgba(255,255,255,.12);
   border: 1px solid rgba(173,199,255,.50);
 }
 
-/* Placeholder style = softer, slightly italic */
 .form-card input::placeholder,
 .form-card textarea::placeholder {
   color: #d8e0ff;
   opacity: .85;
-  font-style: italic;
   letter-spacing: .03em;
 }
 
@@ -485,6 +503,7 @@ html, body { font-family: var(--font-body); }
   box-shadow: 0 0 0 4px rgba(138,182,255,.18);
   color: #ffffff;
 }
+
 label {
   display: grid;
   gap: 6px;
@@ -614,6 +633,44 @@ input:focus, select:focus {
   font-weight: 700;
   color: #dfe6ff;
 }
+
+.chart-wrap {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(16,28,62,.55);
+  border: 1px solid rgba(138,182,255,.25);
+  backdrop-filter: blur(6px) saturate(115%);
+  -webkit-backdrop-filter: blur(6px) saturate(115%);
+}
+.chart-wrap img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+.chart-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 10px;
+}
+.chart-actions a,
+.chart-actions button {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(173,199,255,.5);
+  background: rgba(255,255,255,.08);
+  color: #e6ecff;
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+.chart-actions a:hover,
+.chart-actions button:hover { transform: translateY(-1px); }
+
 
 /* ====== Footer ====== */
 .footer {
@@ -751,7 +808,7 @@ input:focus, select:focus {
 .planet-img.mercury{
   position: absolute; 
   width: 120px; height: 120px;
-  right: 2%; top: 24%;
+  right: 4%; top: 24%;
   background-image: url("/planets/mercury.png");
   background-size: cover; background-position: center; background-repeat: no-repeat;
   animation:  float 7s ease-in-out infinite, spin 60s linear infinite;
