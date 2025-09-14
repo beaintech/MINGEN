@@ -1,4 +1,5 @@
 import os
+import json
 from dotenv import load_dotenv
 from openai import OpenAI
 from datetime import datetime
@@ -221,6 +222,51 @@ class FortuneEngine:
             messages=[{"role": "user", "content": prompt}]
         )
         return response.choices[0].message.content
+
+    def generate_birth_chart(self):
+            """
+            Use GPT-4.1 to render a single SVG natal chart.
+            Returns: SVG string (no markdown/backticks).
+            """
+            # 若你未来实现了精确度数，可从这里取
+            positions = None
+            try:
+                if hasattr(self, "positions_for_chart"):
+                    positions = self.positions_for_chart()
+            except Exception:
+                positions = None
+
+            system_prompt = (
+                "You are an astrology chart renderer. Output one clean SVG natal chart only. "
+                "No markdown, no code fences, no explanations. "
+                "Size 900x900, viewBox='0 0 900 900'. Dark-navy style. "
+                "Draw zodiac ring with glyphs (♈…♓), 12 houses ring with labels, tick marks every 30°, "
+                "label ASC and MC. If ecliptic longitudes are provided, place planets accordingly; "
+                "otherwise draw a neat schematic. Keep inline CSS minimal."
+            )
+
+            user_payload = {
+                "birth": {
+                    "name": self.name,
+                    "birthday": self.birthday,
+                    "time": self.time,
+                    "birthplace": self.birthplace,
+                    "gender": self.gender,
+                },
+                "positions": positions,      # None = schematic; dict = precise
+                "house_system": "Placidus"
+            }
+
+            resp = client.chat.completions.create(
+                model="gpt-4.1",
+                temperature=0.2,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": json.dumps(user_payload, ensure_ascii=False)}
+                ]
+            )
+            svg = resp.choices[0].message.content.strip()
+            return svg
 
 
 # class FortuneEngine:

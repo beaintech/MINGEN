@@ -1,10 +1,14 @@
 import os
 import json
 from fastapi import FastAPI
+from fastapi import Body
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 from openai import OpenAI
 from models.fortune_engine import FortuneEngine
+
+MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1")
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -167,7 +171,29 @@ async def generate_compatibility(data: dict):
     except Exception as e:
         return {"error": f"生成兼容性报告失败：{str(e)}"}
 
+def _build_engine_for_chart(payload: dict):
+    kw = dict(
+        name=payload.get("name"),
+        birthday=payload.get("birthday"),
+        time=payload.get("time"),
+        birthplace=payload.get("birthplace"),
+        gender=payload.get("gender", "Not Provided"),
+    )
+    try:
+        return FortuneEngine(**kw, client=client)  
+    except TypeError:
+        return FortuneEngine(**kw)
 
+@app.post("/generate-birth-chart")
+async def generate_birth_chart(data: dict = Body(...)):
+    try:
+        eng = _build_engine_for_chart(data)
+        svg = eng.generate_birth_chart()         
+        return JSONResponse({"chart_svg": svg})
+    except Exception as e:
+        return JSONResponse({"error": f"生成出生星盘失败: {e}"}, status_code=500)
+
+    
 # @app.post("/submit")
 # async def submit(data: dict):
 #     try:
