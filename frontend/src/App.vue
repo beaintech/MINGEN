@@ -204,8 +204,8 @@ const clearBirthChart = () => {
 
 const generateBasic = async () => {
   try {
-    const res = await axios.post('http://127.0.0.1:10000/generate-basic-report', formData.value)
-    // const res = await axios.post(`${API_BASE}/generate-basic-report`, formData.value)
+    // const res = await axios.post('http://127.0.0.1:10000/generate-basic-report', formData.value)
+    const res = await axios.post(`${API_BASE}/generate-basic-report`, formData.value)
     basicReport.value = cleanMarkdown(res.data.result)
   } catch (err) {
     console.error('Basic Report Error:', err)
@@ -215,8 +215,8 @@ const generateBasic = async () => {
 
 const generateExtra = async () => {
   try {
-    const res = await axios.post('http://127.0.0.1:10000/generate-extra-report', formData.value)
-    // const res = await axios.post(`${API_BASE}/generate-extra-report`, formData.value)
+    // const res = await axios.post('http://127.0.0.1:10000/generate-extra-report', formData.value)
+    const res = await axios.post(`${API_BASE}/generate-extra-report`, formData.value)
     extraReport.value = cleanMarkdown(res.data.result)
   } catch (err) {
     console.error('Extra Report Error:', err)
@@ -226,8 +226,8 @@ const generateExtra = async () => {
 
 const generateCompatibility = async () => {
   try {
-    const res = await axios.post('http://127.0.0.1:10000/generate-compatibility-report', formData.value)
-    // const res = await axios.post(`${API_BASE}/generate-compatibility-report`, formData.value)
+    // const res = await axios.post('http://127.0.0.1:10000/generate-compatibility-report', formData.value)
+    const res = await axios.post(`${API_BASE}/generate-compatibility-report`, formData.value)
     compatibilityReport.value = cleanMarkdown(res.data.result)
   } catch (err) {
     console.error('Compatibility Error:', err)
@@ -239,8 +239,8 @@ const generateBirthChart = async () => {
   try {
     clearBirthChart()
 
-    const res = await axios.post('http://127.0.0.1:10000/generate-birth-chart', formData.value)
-    // const res = await axios.post(`${API_BASE}/generate-birth-chart`, formData.value)
+    // const res = await axios.post('http://127.0.0.1:10000/generate-birth-chart', formData.value)
+    const res = await axios.post(`${API_BASE}/generate-birth-chart`, formData.value)
     const svg = res.data?.chart_svg
     if (!svg) throw new Error('No chart_svg in response')
 
